@@ -5,7 +5,7 @@ Created on Fri Jun 16 10:09:46 2017
 @author: Carl-Magnus Svensson
 @affiliation: Research Group Applied Systems Biology, Leibniz Institute for 
 Natural Product Research and Infection Biology – Hans Knöll Institute (HKI),
-Beutenbergstrasse 11a, 07745 Jena, Germany.
+Adolf-Reichwein-Straße 23, 07745 Jena, Germany.
 @email: carl-magnus.svensson@leibniz-hki.de or cmgsvensson@gmail.com
 
 This is a script calulating and testing differences in realative mutation 
