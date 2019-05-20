@@ -1,0 +1,41 @@
+README 
+-------------------------------------------------------------------------------
+This package contains code and data that calulates and tests differences in 
+realative mutation frequancy between Control and brca mutatants. Full details 
+of the study can be found in Hirth et al., "Regulation of the germinal center 
+reaction and somatic hypermutation dynamics by homologus recombination", Jounal 
+of Immunology. If any part of the code is used for academic purposes or 
+publications, please cite the above mentioned paper.
+
+Contents
+-------------------------------------------------------------------------------
+pseudo_time_analysis.py:
+	Script for running the Bayesian analysis of realative mutation 
+	frequancy. The script produces Figures 5c and supplementary Figure 3.
+mutation_log_vs2.csv
+	Comma separated file containing the numbers and types of mutations of
+	the sequences.
+README:
+	What you currently have open.
+LICENCE:
+	Licencing details of this software (BSD License 2.0).
+
+
+Requirements:
+-------------------------------------------------------------------------------
+Python 2.7+:
+	Code is developed and tested using Python 2.7.13 :: Anaconda custom 
+numpy:
+	Tested on numpy 1.11. http://www.numpy.org/
+matplotlib:
+	Tested on matplotlib 1.5.1. http://matplotlib.org/
+scipy:
+	Tested on scipy 0.18.1. https://www.scipy.org/
+pandas:
+	Tested on pandas 0.18.1. http://pandas.pydata.org/
+seaborn:
+	Tested on seaborn 0.7.1. https://seaborn.pydata.org/
+scikit-learn:
+	Tested on sklearn 0.17. http://scikit-learn.org/
+
+
