@@ -16,8 +16,14 @@ of the code is used for academic purposes or publications, please cite the
 above mentioned paper.
 
 Copyright (c) 2017, 
-Leibniz Institute for Natural Product Research and Infection Biology – 
-Hans Knöll Institute (HKI)
+Dr. Carl-Magnus Svensson
+
+Research Group Applied Systems Biology - Head: Prof. Dr. Marc Thilo Figge
+https://www.leibniz-hki.de/en/applied-systems-biology.html
+HKI-Center for Systems Biology of Infection
+Leibniz Institute for Natural Product Research and Infection Biology -
+Hans Knöll Insitute (HKI)
+Adolf-Reichwein-Straße 23, 07745 Jena, Germany
 
 Licence: BSD-3-Clause, see ./LICENSE or 
 https://opensource.org/licenses/BSD-3-Clause for full details
