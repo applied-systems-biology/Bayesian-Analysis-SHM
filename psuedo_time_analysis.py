@@ -36,8 +36,8 @@ import pandas as pd
 import seaborn as sns
 from sklearn.linear_model import LinearRegression as LR
 
-rc={'image.cmap': 'YlGnBu', 'font.size': 20, 'axes.labelsize': 20, 'legend.fontsize': 15.0, 
-    'axes.titlesize': 20, 'xtick.labelsize': 15, 'ytick.labelsize': 15, 'lines.linewidth': 5.0,
+rc={'image.cmap': 'YlGnBu', 'font.size': 20, 'axes.labelsize': 40, 'legend.fontsize': 30.0, 
+    'axes.titlesize': 50, 'xtick.labelsize': 40, 'ytick.labelsize': 40, 'lines.linewidth': 7.0,
     'font.family' : 'sans-serif', 'font.sans-serif' : 'Arial'}
 sns.set_context(rc=rc)
 
@@ -88,7 +88,7 @@ def P_pa_larger_than_pb(pa,pb):
     nb = pb.shape[0]
     J = 0.0
 
-    for ii in xrange(nb):
+    for ii in range(nb):
         J += pb[ii]*(np.sum(pa[ii:]))
             
     return J/np.sum(np.outer(pa,pb))
@@ -125,7 +125,7 @@ def p_phi_G_k(df, phi, group = 'Control', mut = 'N mutations', K = 1):
         
     for k0 in k:
         ii = 0
-        for pp in xrange(1001):
+        for pp in range(1001):
             p_pi[pp] *= binomial_distribution(k0,K,phi[pp])
         ii += 1
         p_pi = p_pi/np.sum(p_pi*phi[1])
@@ -167,9 +167,9 @@ def MM_linear_fit(p_phi_G_k, phi, N_iter = 1000, verbose = True):
     R_list = np.zeros(N_iter)
     interc = 0
     phi_all = np.zeros([N_iter, p_phi_G_k.shape[0]])
-    for ii in xrange(N_iter):
+    for ii in range(N_iter):
         phi_list = np.zeros(p_phi_G_k.shape[0])
-        for k in xrange(p_phi_G_k.shape[0]): 
+        for k in range(p_phi_G_k.shape[0]): 
             accepted = False
             while not accepted:
                 idx = np.random.randint(0, 1000)
@@ -188,16 +188,16 @@ def MM_linear_fit(p_phi_G_k, phi, N_iter = 1000, verbose = True):
         R_list[ii] = mod.score(np.atleast_2d(range(1,6)).T, phi_list)
 
     if verbose:
-        print 'Slope: %.5f  (%.5f, %.5f)'%(np.median(slope_list), np.percentile(slope_list, 2.5), np.percentile(slope_list, 97.5))
-        print 'Intercept: %.5f  (%.5f, %.5f)'%(np.median(inter_list), np.percentile(inter_list, 2.5), np.percentile(inter_list, 97.5))
-        print 'R^2: %.5f  (%.5f, %.5f)'%(np.median(R_list), np.percentile(R_list, 2.5), np.percentile(R_list, 97.5))
+        print('Slope: %.5f  (%.5f, %.5f)'%(np.median(slope_list), np.percentile(slope_list, 2.5), np.percentile(slope_list, 97.5)))
+        print( 'Intercept: %.5f  (%.5f, %.5f)'%(np.median(inter_list), np.percentile(inter_list, 2.5), np.percentile(inter_list, 97.5)))
+        print( 'R^2: %.5f  (%.5f, %.5f)'%(np.median(R_list), np.percentile(R_list, 2.5), np.percentile(R_list, 97.5)))
     
     return slope_list, inter_list, phi_all
  
 # Read the dataset with the mutations and their types for all sequences
 df = pd.read_csv('./mutation_log_vs2.csv', sep = ';')
 # We consider the range between 1 and 5 mutations per sequence
-k_array = np.array(xrange(1,6))
+k_array = np.array(range(1,6))
 
 # We numerically evaluate 1001 values of the relative mutation frequency between
 # 0 and 0.5.
@@ -208,32 +208,32 @@ subp = 2.0
 fig1, axes1 = plt.subplots(nrows=4, ncols=4)
 # Loop over all possible mutations
 for m in cgatx:
-    print m
+    print(m)
     p_pi_c_N = np.zeros([5,1001])
     p_pi_b_N = np.zeros([5,1001])
     # Calculate the posterior PDF for Control and brca
-    for ii in xrange(5):
+    for ii in range(5):
         p_pi_c = p_phi_G_k(df.loc[df['N mutations'] == ii+1], phi, mut = m, K = ii+1)
         p_pi_b = p_phi_G_k(df.loc[df['N mutations'] == ii+1], phi, group = 'brca', mut = m, K = ii+1)
         p_pi_c_N[ii] = p_pi_c[:]
         p_pi_b_N[ii] = p_pi_b[:]
     # Perform trend analysis by Monte Carlo simulation and linear fits.
-    print 'control:'
+    print('control:')
     k_c,  i_c, phi_c = MM_linear_fit(p_pi_c_N, phi)
-    print 'brca:'
+    print('brca:')
     k_b,  i_b, phi_b = MM_linear_fit(p_pi_b_N, phi)
-    print '-'*40
+    print('-'*40)
 
     # Check if the relative muatation frequency for Control is higher than brca
     # for different number of mutations per sequence. The probability that the 
     # elative muatation frequency for brca is higher than Control is 1-J.
-    for ii in xrange(5):
+    for ii in range(5):
         J = P_pa_larger_than_pb(p_pi_c_N[ii], p_pi_b_N[ii])   
-        print r'$P(\phi_{control}>\phi_{control}|K=%s,M=%s)$=%.4f$'%(ii,m,J)
+        print(r'$P(\phi_{control}>\phi_{control}|K=%s,M=%s)$=%.4f$'%(ii,m,J))
 
     # Plot posterior PDFs for Control
     plt.subplot(4,4,subp)
-    im1 = plt.pcolor(xrange(1,7), phi, p_pi_c_N.T, cmap = sns.light_palette("blue", n_colors = 24, as_cmap=True, input='xkcd'), vmax = 15)
+    im1 = plt.pcolor(range(1,7), phi, p_pi_c_N.T, cmap = sns.light_palette("blue", n_colors = 24, as_cmap=True, input='xkcd'), vmax = 15)
     plt.plot(k_array+0.5, np.median(phi_c,axis=0), 'o', color = [0.4, 0.4, 0.4])   
     plt.xlabel('k')
     plt.ylabel(r'$\phi$')
@@ -242,10 +242,10 @@ for m in cgatx:
 
     # Print the differences in slope and intercept between Control and brca 
     # with 95% CI for the differnces.
-    print 'Slope difference: %.5f  (%.5f, %.5f)'%(np.median(k_c-k_b), np.percentile(k_c-k_b, 2.5), np.percentile(k_c-k_b, 97.5))
-    print 'Intercept difference: %.5f  (%.5f, %.5f)'%(np.median(i_c-i_b), np.percentile(i_c-i_b, 2.5), np.percentile(i_c-i_b, 97.5))
+    print('Slope difference: %.5f  (%.5f, %.5f)'%(np.median(k_c-k_b), np.percentile(k_c-k_b, 2.5), np.percentile(k_c-k_b, 97.5)))
+    print('Intercept difference: %.5f  (%.5f, %.5f)'%(np.median(i_c-i_b), np.percentile(i_c-i_b, 2.5), np.percentile(i_c-i_b, 97.5)))
         
-    print '-'*40
+    print('-'*40)
     subp += 1.0
     if np.mod(subp-1,5) == 0:
         subp += 1
@@ -263,14 +263,14 @@ fig2, axes2 = plt.subplots(nrows=4, ncols=4)
 subp = 2.0
 for m in cgatx:
     p_pi_b_N = np.zeros([5,1001])
-    for ii in xrange(5):
+    for ii in range(5):
         p_pi_b = p_phi_G_k(df.loc[df['N mutations'] == ii+1], phi, group = 'brca', mut = m, K = ii+1)
         p_pi_b_N[ii] = p_pi_b[:]
 
     k_b, i_b, phi_b = MM_linear_fit(p_pi_b_N, phi, verbose = False)
 
     plt.subplot(4,4,subp)
-    im2 = plt.pcolor(xrange(1,7), phi, p_pi_b_N.T, cmap = sns.light_palette("green", n_colors = 24, as_cmap=True, input='xkcd'), vmax = 15)
+    im2 = plt.pcolor(range(1,7), phi, p_pi_b_N.T, cmap = sns.light_palette("green", n_colors = 24, as_cmap=True, input='xkcd'), vmax = 15)
 
     plt.plot(k_array+0.5, np.median(phi_b,axis=0), 'ko')      
     plt.xlabel('k')
@@ -296,49 +296,51 @@ subp = 1.0
 fig, axes = plt.subplots(nrows=2, ncols=4)
 # Calculate the posterior PDFs of the focus muatations and visualize slightly 
 # differently
-for m in ['GC', 'CG', 'AG', 'AT']:
-    print m
+for m in ['GC', 'CG', 'AG', 'TC']:
+    print(m)
     p_pi_c_N = np.zeros([5,1001])
     p_pi_b_N = np.zeros([5,1001])
-    for ii in xrange(5):
+    for ii in range(5):
         p_pi_c = p_phi_G_k(df.loc[df['N mutations'] == ii+1], phi, mut = m, K = ii+1)
         p_pi_b = p_phi_G_k(df.loc[df['N mutations'] == ii+1], phi, group = 'brca', mut = m, K = ii+1)
         p_pi_c_N[ii] = p_pi_c[:]
         p_pi_b_N[ii] = p_pi_b[:]
-    print 'control:'
-    k_c, phi_c, i_c = MM_linear_fit(p_pi_c_N, phi)
-    print 'brca:'
-    k_b, phi_b, i_b = MM_linear_fit(p_pi_b_N, phi)
-    print '-'*40
-    for ii in xrange(5):
+    print('control:')
+    k_c, i_c, phi_c = MM_linear_fit(p_pi_c_N, phi)
+    print('brca:')
+    k_b, i_b, phi_b = MM_linear_fit(p_pi_b_N, phi)
+    print('-'*40)
+    for ii in range(5):
         J = P_pa_larger_than_pb(p_pi_c_N[ii], p_pi_b_N[ii])   
-        print r'$P(\phi_{control}>\phi_{control}|K=%s,M=%s)$=%.4f$'%(ii,m,J)
+        print(r'$P(\phi_{control}>\phi_{control}|K=%s,M=%s)$=%.4f$'%(ii,m,J))
 
     plt.subplot(2,4,subp)
-    plt.pcolor(xrange(1,7), phi, p_pi_c_N.T, cmap = sns.light_palette("grey", as_cmap=True, input='xkcd'), vmax = 15)
-    plt.plot(k_array+0.5, np.median(k_c)*k_array+np.mean(i_c), color = [0.4, 0.4, 0.4])   
-    plt.xlabel('k')
-    plt.ylabel(r'$\phi$')
+    plt.pcolor(range(1,7), phi, p_pi_c_N.T, cmap = sns.light_palette("grey", as_cmap=True, input='xkcd'), vmax = 15)
+    plt.plot(k_array+0.5, np.median(k_c)*(k_array)+np.median(i_c), color = [0.4, 0.4, 0.4])   
+    #plt.xlabel('k')
+    #plt.ylabel(r'$\phi$')
     plt.title(r'$%s>%s$'%(m[0],m[1]))
-    plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.3, hspace=0.4)
+    plt.xticks([1.5, 2.5, 3.5, 4.5, 5.5], ['1', '2', '3', '4', '5'])
+
     plt.subplot(2,4,subp + 4)
-    im = plt.pcolor(xrange(1,7), phi, p_pi_b_N.T, cmap = sns.light_palette("grey", as_cmap=True, input='xkcd'), vmax = 15)
-    plt.plot(k_array+0.5, np.median(k_b)*k_array+np.mean(i_b), 'k')    
-    plt.xlabel('k')
-    plt.ylabel(r'$\phi$')
-    #plt.title(r'$%s>%s$'%(m[0],m[1]))
+    im = plt.pcolor(range(1,7), phi, p_pi_b_N.T, cmap = sns.light_palette("grey", as_cmap=True, input='xkcd'), vmax = 15)
+    plt.plot(k_array+0.5, np.median(k_b)*(k_array)+np.median(i_b), 'k')    
+    #plt.xlabel('k')
+    #plt.ylabel(r'$\phi$')
+    plt.xticks([1.5, 2.5, 3.5, 4.5, 5.5], ['1', '2', '3', '4', '5'])
     subp += 1.0
-    print 'Slope difference: %.5f  (%.5f, %.5f)'%(np.median(k_c-k_b), np.percentile(k_c-k_b, 2.5), np.percentile(k_c-k_b, 97.5))
-    print '-'*40  
+    print('Slope difference: %.5f  (%.5f, %.5f)'%(np.median(k_c-k_b), np.percentile(k_c-k_b, 2.5), np.percentile(k_c-k_b, 97.5)))
+    print('-'*40  )
     
     if np.mod(subp-1,5) == 0:
         subp += 1
 
-    plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.3, hspace=0.4)
-fig.subplots_adjust(right=0.8)
-cbar_ax = fig.add_axes([0.85, 0.15, 0.05, 0.7])
-cbar = fig.colorbar(im, cax=cbar_ax)
-cbar.ax.set_ylabel(r'$p(\phi|k,S,M)$')
+    plt.subplots_adjust(top=0.94, bottom=0.18, left=0.05, right=0.99,
+                        hspace=0.2, wspace=0.3)
+fig.subplots_adjust(bottom=0.2)
+cbar_ax = fig.add_axes([0.15, 0.1, 0.7, 0.025])
+cbar = fig.colorbar(im, cax=cbar_ax, orientation='horizontal')
+cbar.ax.set_xlabel(r'$p(\phi|k,S,M)$')
 
 plt.show()
 
